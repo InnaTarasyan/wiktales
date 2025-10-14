@@ -2,9 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [\App\Http\Controllers\TaleController::class, 'index'])->name('home');
 
 use App\Http\Controllers\TaleController;
 
