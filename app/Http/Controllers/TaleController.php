@@ -9,7 +9,7 @@ class TaleController extends Controller
 {
     public function index()
     {
-        $tales = Tale::query()->orderBy('title')->get();
+        $tales = Tale::query()->orderBy('title')->paginate(12);
         return view('tales.index', compact('tales'));
     }
 

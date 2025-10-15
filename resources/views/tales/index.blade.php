@@ -74,9 +74,71 @@
             margin-bottom: 0.5rem;
         }
         
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 3rem;
+        }
+        
+        .pagination a,
+        .pagination span {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+        
+        .pagination a {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+        
+        .pagination a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .pagination .current {
+            background: linear-gradient(135deg, #4c1d95 0%, #6d28d9 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(76, 29, 149, 0.4);
+        }
+        
+        .pagination .disabled {
+            background: #e2e8f0;
+            color: #94a3b8;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+        
+        .pagination .disabled:hover {
+            transform: none;
+            box-shadow: none;
+        }
+        
         @media (max-width: 640px) {
             .book-card:hover .book-cover {
                 transform: translateY(-4px);
+            }
+            
+            .pagination {
+                gap: 0.25rem;
+                flex-wrap: wrap;
+            }
+            
+            .pagination a,
+            .pagination span {
+                width: 2rem;
+                height: 2rem;
+                font-size: 0.875rem;
             }
         }
     </style>
@@ -134,6 +196,34 @@
             </div>
         @endforeach
     </div>
+    
+    <!-- Pagination -->
+    @if($tales->hasPages())
+        <div class="pagination">
+            {{-- Previous Page Link --}}
+            @if ($tales->onFirstPage())
+                <span class="disabled">‹</span>
+            @else
+                <a href="{{ $tales->previousPageUrl() }}" rel="prev">‹</a>
+            @endif
+
+            {{-- Pagination Elements --}}
+            @foreach ($tales->getUrlRange(1, $tales->lastPage()) as $page => $url)
+                @if ($page == $tales->currentPage())
+                    <span class="current">{{ $page }}</span>
+                @else
+                    <a href="{{ $url }}">{{ $page }}</a>
+                @endif
+            @endforeach
+
+            {{-- Next Page Link --}}
+            @if ($tales->hasMorePages())
+                <a href="{{ $tales->nextPageUrl() }}" rel="next">›</a>
+            @else
+                <span class="disabled">›</span>
+            @endif
+        </div>
+    @endif
     
     @if($tales->isEmpty())
         <div class="text-center py-16">
