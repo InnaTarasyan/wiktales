@@ -6,6 +6,9 @@
     <title>{{ $tale->title }}</title>
     <script src="https://cdn.tailwindcss.com?plugins=typography,aspect-ratio,line-clamp,forms"></script>
     <style>
+        :root {
+            --reader-font-size: 18px;
+        }
         .reading-container {
             scroll-behavior: smooth;
         }
@@ -54,6 +57,25 @@
         .reader-controls button {
             border-radius: 0.5rem;
         }
+        /* Improve long text readability */
+        #readerArticle.prose {
+            font-size: var(--reader-font-size);
+            line-height: 1.85;
+            text-wrap: pretty;
+            -webkit-hyphens: auto;
+            -ms-hyphens: auto;
+            hyphens: auto;
+            hanging-punctuation: first last;
+        }
+        #readerArticle.prose p { margin-top: 0.9em; margin-bottom: 0.9em; }
+        #readerArticle.prose img { margin: 1.25rem auto; }
+        #readerArticle.prose blockquote { font-style: italic; border-left: 4px solid #e5e7eb; padding-left: 1rem; }
+        #readerArticle.prose a { text-underline-offset: 3px; }
+        /* Back to top */
+        #backToTop { position: fixed; right: 1rem; bottom: 1rem; display: none; z-index: 50; }
+        #backToTop.show { display: inline-flex; }
+        /* Scrollspy active link */
+        .toc-link.active { color: #4f46e5; font-weight: 600; }
     </style>
 </head>
 <body class="bg-gray-50">
@@ -69,7 +91,7 @@
                     <ul class="space-y-2 text-sm">
                         @foreach($tale->sections as $section)
                             <li>
-                                <a href="#{{ $section->anchor }}" class="text-gray-700 hover:text-indigo-600">{{ $section->title ?? 'Section' }}</a>
+                                <a href="#{{ $section->anchor }}" class="toc-link text-gray-700 hover:text-indigo-600" data-anchor="{{ $section->anchor }}">{{ $section->title ?? 'Section' }}</a>
                             </li>
                         @endforeach
                     </ul>
@@ -147,7 +169,7 @@
             <ul class="divide-y divide-gray-100">
                 @foreach($tale->sections as $section)
                     <li>
-                        <a href="#{{ $section->anchor }}" class="block py-2 text-gray-800">{{ $section->title ?? 'Section' }}</a>
+                        <a href="#{{ $section->anchor }}" class="block py-2 text-gray-800" data-anchor="{{ $section->anchor }}">{{ $section->title ?? 'Section' }}</a>
                     </li>
                 @endforeach
             </ul>
@@ -155,6 +177,9 @@
     </div>
     <button id="drawerBackdrop" class="absolute inset-0" aria-label="Close"></button>
     </div>
+
+<!-- Back to top button -->
+<button id="backToTop" class="px-3 py-2 rounded-lg bg-indigo-600 text-white shadow hover:bg-indigo-700">Top</button>
 
 <script>
     (function() {
@@ -171,10 +196,11 @@
         const closeDrawer = document.getElementById('closeDrawer');
         const backdrop = document.getElementById('drawerBackdrop');
 
-        // Font size control
-        let base = parseFloat(getComputedStyle(article).fontSize) || 16;
+        // Font size control via CSS variable ensures it overrides Tailwind prose
+        const defaultFont = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--reader-font-size')) || 18;
+        let base = defaultFont;
         function applyFont(size) {
-            article.style.fontSize = size + 'px';
+            root.style.setProperty('--reader-font-size', size + 'px');
             localStorage.setItem('readerFont', String(size));
         }
         inc && inc.addEventListener('click', () => { base = Math.min(base + 2, 26); applyFont(base); });
@@ -205,15 +231,18 @@
             container.classList.add('max-w-3xl');
         }
 
-        // Scroll progress
+        // Scroll progress + back to top visibility
+        const backToTop = document.getElementById('backToTop');
         function updateProgress() {
             const scrollTop = window.scrollY || document.documentElement.scrollTop;
             const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
             const width = Math.min(100, Math.max(0, (scrollTop / docHeight) * 100));
             progress.style.width = width + '%';
+            if (scrollTop > 600) backToTop.classList.add('show'); else backToTop.classList.remove('show');
         }
         window.addEventListener('scroll', updateProgress, { passive: true });
         updateProgress();
+        backToTop && backToTop.addEventListener('click', function() { window.scrollTo({ top: 0, behavior: 'smooth' }); });
 
         // Mobile TOC drawer
         function openDrawer() { drawer.classList.add('open'); }
@@ -251,6 +280,23 @@
             }
         }
         window.addEventListener('load', adjustHashScroll);
+
+        // Scrollspy: highlight current section in TOC
+        const tocLinks = Array.from(document.querySelectorAll('.toc-link'));
+        const anchors = Array.from(document.querySelectorAll('main section[id]'));
+        const linkById = new Map(tocLinks.map(a => [a.getAttribute('data-anchor'), a]));
+        let activeId = null;
+        const spy = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    activeId = entry.target.id;
+                    tocLinks.forEach(a => a.classList.remove('active'));
+                    const link = linkById.get(activeId);
+                    if (link) link.classList.add('active');
+                }
+            });
+        }, { rootMargin: '-30% 0px -60% 0px', threshold: 0.01 });
+        anchors.forEach(sec => spy.observe(sec));
     })();
 </script>
 </body>
