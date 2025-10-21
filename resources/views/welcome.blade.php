@@ -273,5 +273,13 @@
         @if (Route::has('login'))
             <div class="h-14.5 hidden lg:block"></div>
         @endif
+
+        <!-- Footer -->
+        <footer class="w-full lg:max-w-4xl max-w-[335px] mt-6 lg:mt-8 pt-4 lg:pt-6 border-t border-[#e3e3e0] dark:border-[#3E3E3A]">
+            <div class="text-center text-xs sm:text-sm text-[#706f6c] dark:text-[#A1A09A] px-4 lg:px-0">
+                <p class="mb-2 lg:mb-0">&copy; {{ date('Y') }} Wiktales. All rights reserved.</p>
+                <p class="text-xs sm:text-sm leading-relaxed max-w-md mx-auto">Discover amazing stories and adventures in our curated collection of tales.</p>
+            </div>
+        </footer>
     </body>
 </html>

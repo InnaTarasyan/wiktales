@@ -233,6 +233,14 @@
         </div>
     @endif
 </div>
+
+<!-- Footer -->
+<footer class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 sm:mt-12 pt-6 sm:pt-8 border-t border-gray-200">
+    <div class="text-center text-xs sm:text-sm text-gray-600">
+        <p class="mb-2 sm:mb-0">&copy; {{ date('Y') }} Wiktales. All rights reserved.</p>
+        <p class="text-xs sm:text-sm leading-relaxed max-w-lg mx-auto">Discover amazing stories and adventures in our curated collection of tales.</p>
+    </div>
+</footer>
 </body>
 </html>
 

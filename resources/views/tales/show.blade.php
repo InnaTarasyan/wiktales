@@ -181,6 +181,14 @@
 <!-- Back to top button -->
 <button id="backToTop" class="px-3 py-2 rounded-lg bg-indigo-600 text-white shadow hover:bg-indigo-700">Top</button>
 
+<!-- Footer -->
+<footer class="w-full max-w-6xl mx-auto px-4 sm:px-6 mt-8 sm:mt-12 pt-6 sm:pt-8 border-t border-gray-200">
+    <div class="text-center text-xs sm:text-sm text-gray-600">
+        <p class="mb-2 sm:mb-0">&copy; {{ date('Y') }} Wiktales. All rights reserved.</p>
+        <p class="text-xs sm:text-sm leading-relaxed max-w-lg mx-auto">Discover amazing stories and adventures in our curated collection of tales.</p>
+    </div>
+</footer>
+
 <script>
     (function() {
         const root = document.documentElement;
