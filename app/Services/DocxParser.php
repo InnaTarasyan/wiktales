@@ -77,24 +77,40 @@ class DocxParser
             foreach ($lines as $l) { if ($l['text'] !== '') { $title = $l['text']; break; } }
         }
 
-        // TOC heuristic: contiguous short lines with trailing page numbers or dotted leaders
+        // TOC heuristic: contiguous lines with numbered sections (1., 2., etc.) followed by titles
         $toc = [];
-        $inToc = false; $buffer = [];
+        $inToc = false;
+        $buffer = [];
+        
         foreach ($lines as $l) {
             $t = preg_replace('/\s+/u', ' ', $l['text']);
-            if ($t === '') { if ($inToc && count($buffer) > 0) break; continue; }
-            if (preg_match('/[\.\s]+(\d+)$/u', $t)) {
-                $inToc = true; $buffer[] = $t; continue;
+            if ($t === '') { 
+                if ($inToc && count($buffer) > 0) break; 
+                continue; 
+            }
+            
+            // Check if this line starts with a number followed by a dot (like "1.", "2.", etc.)
+            if (preg_match('/^\d+\.\s*(.+)$/u', $t, $matches)) {
+                $inToc = true;
+                // Clean the title by removing trailing dots and page numbers
+                // Remove any trailing dots, spaces, and page numbers
+                $cleanTitle = preg_replace('/[\.\s]*\d+[\.\s]*$/u', '', $matches[1]);
+                // Remove any remaining trailing dots, spaces, and other punctuation
+                $cleanTitle = preg_replace('/[\.\s\p{P}]+$/u', '', $cleanTitle);
+                $cleanTitle = trim($cleanTitle);
+                $buffer[] = $cleanTitle;
+                continue;
             } else {
                 if ($inToc) break;
             }
         }
-        foreach ($buffer as $i => $raw) {
-            if (preg_match('/^(.*?)[\.\s]+(\d+)$/u', $raw, $m)) {
-                $toc[] = [ 'title' => trim($m[1]), 'page' => (int)$m[2], 'order' => $i + 1 ];
-            } else {
-                $toc[] = [ 'title' => trim($raw), 'order' => $i + 1 ];
-            }
+        
+        // Process the TOC entries
+        foreach ($buffer as $i => $title) {
+            $toc[] = [ 
+                'title' => trim($title), 
+                'order' => $i + 1 
+            ];
         }
 
         // Sections: split by Heading 1
