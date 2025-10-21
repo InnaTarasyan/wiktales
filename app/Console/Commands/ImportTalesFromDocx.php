@@ -23,7 +23,7 @@ class ImportTalesFromDocx extends Command
      *
      * @var string
      */
-    protected $description = 'Import tales from .docx files in storage/tales';
+    protected $description = 'Импорт сказок из .docx файлов в storage/tales';
 
     /**
      * Execute the console command.
@@ -43,19 +43,19 @@ class ImportTalesFromDocx extends Command
         $files = collect($candidates)->unique()->values();
 
         if ($files->isEmpty()) {
-            $this->info('No .docx files found in storage/tales or storage/app/tales');
+            $this->info('Файлы .docx не найдены в storage/tales или storage/app/tales');
             return self::SUCCESS;
         }
 
         $parser = app(DocxParser::class);
 
         foreach ($files as $fullPath) {
-            $this->line("Importing: {$fullPath}");
+            $this->line("Импорт: {$fullPath}");
 
             try {
                 $data = $parser->parse($fullPath);
             } catch (\Throwable $e) {
-                $this->error("Failed to parse {$fullPath}: " . $e->getMessage());
+                $this->error("Ошибка парсинга {$fullPath}: " . $e->getMessage());
                 continue;
             }
 
@@ -111,7 +111,7 @@ class ImportTalesFromDocx extends Command
             }
         }
 
-        $this->info('Import finished.');
+        $this->info('Импорт завершен.');
         return self::SUCCESS;
     }
 }

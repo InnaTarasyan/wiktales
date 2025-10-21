@@ -1,16 +1,16 @@
 @extends('layouts.app')
 
-@section('title', 'Tales Collection')
+@section('title', 'Коллекция сказок')
 
 @section('content')
 <div class="bg-gradient-to-br from-slate-50 to-blue-50 min-h-screen">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div class="text-center mb-12">
             <h1 class="text-4xl sm:text-5xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent mb-4">
-                Tales Collection
+                Коллекция сказок
             </h1>
             <p class="text-gray-600 text-lg max-w-2xl mx-auto">
-                Discover amazing stories and adventures in our curated collection of tales
+                Откройте удивительные истории и приключения в нашей тщательно отобранной коллекции сказок
             </p>
         </div>
         
@@ -29,7 +29,7 @@
                                      class="w-full h-64 sm:h-72 object-cover transition-transform duration-300 group-hover:scale-105">
                             @else
                                 <div class="w-full h-64 sm:h-72 book-placeholder">
-                                    No cover available
+                                    Обложка недоступна
                                 </div>
                             @endif
                             
@@ -45,7 +45,7 @@
                             <!-- Read more indicator -->
                             <div class="flex items-center justify-center mt-3 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
                                 <span class="text-sm text-purple-600 font-medium flex items-center gap-1">
-                                    Read more
+                                    Читать далее
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                                     </svg>
@@ -88,8 +88,8 @@
         @if($tales->isEmpty())
             <div class="text-center py-16">
                 <div class="text-6xl mb-4">📚</div>
-                <h3 class="text-2xl font-semibold text-gray-700 mb-2">No tales available yet</h3>
-                <p class="text-gray-500">Check back soon for amazing stories!</p>
+                <h3 class="text-2xl font-semibold text-gray-700 mb-2">Пока нет доступных сказок</h3>
+                <p class="text-gray-500">Заходите скоро за удивительными историями!</p>
             </div>
         @endif
     </div>

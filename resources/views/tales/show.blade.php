@@ -10,13 +10,13 @@
             <aside class="hidden lg:block w-64 shrink-0">
                 <div class="toc-sticky bg-white rounded-xl shadow-sm ring-1 ring-gray-100 p-4">
                     <div class="flex items-center justify-between mb-3">
-                        <h2 class="text-sm font-semibold text-gray-700">Contents</h2>
+                        <h2 class="text-sm font-semibold text-gray-700">Содержание</h2>
                     </div>
                     <nav>
                         <ul class="space-y-2 text-sm">
                             @foreach($tale->sections as $section)
                                 <li>
-                                    <a href="#{{ $section->anchor }}" class="toc-link text-gray-700 hover:text-indigo-600" data-anchor="{{ $section->anchor }}">{{ $section->title ?? 'Section' }}</a>
+                                    <a href="#{{ $section->anchor }}" class="toc-link text-gray-700 hover:text-indigo-600" data-anchor="{{ $section->anchor }}">{{ $section->title ?? 'Раздел' }}</a>
                                 </li>
                             @endforeach
                         </ul>
@@ -33,17 +33,17 @@
                         <div class="reader-controls flex items-center gap-2 text-sm">
                             <button id="decreaseFont" class="px-3 py-2 bg-white ring-1 ring-gray-200 text-gray-700 hover:bg-gray-50">A-</button>
                             <button id="increaseFont" class="px-3 py-2 bg-white ring-1 ring-gray-200 text-gray-700 hover:bg-gray-50">A+</button>
-                            <button id="toggleWidth" class="px-3 py-2 bg-white ring-1 ring-gray-200 text-gray-700 hover:bg-gray-50">Toggle width</button>
-                            <button id="toggleTheme" class="px-3 py-2 bg-gray-900 text-white hover:bg-black">Dark</button>
-                            <button id="openToc" class="px-3 py-2 bg-indigo-600 text-white lg:hidden">Contents</button>
+                            <button id="toggleWidth" class="px-3 py-2 bg-white ring-1 ring-gray-200 text-gray-700 hover:bg-gray-50">Ширина</button>
+                            <button id="toggleTheme" class="px-3 py-2 bg-gray-900 text-white hover:bg-black">Темная</button>
+                            <button id="openToc" class="px-3 py-2 bg-indigo-600 text-white lg:hidden">Содержание</button>
                         </div>
                     </div>
                 </div>
                 
                 <div class="lg:hidden">
                     <div class="flex items-center justify-between bg-white rounded-xl ring-1 ring-gray-100 p-4 shadow-sm">
-                        <div class="text-sm text-gray-600">Table of contents</div>
-                        <button id="openToc2" class="px-3 py-2 bg-indigo-600 text-white rounded">Open</button>
+                        <div class="text-sm text-gray-600">Содержание</div>
+                        <button id="openToc2" class="px-3 py-2 bg-indigo-600 text-white rounded">Открыть</button>
                     </div>
                 </div>
 
@@ -61,7 +61,7 @@
                                     {!! $section->body_html !!}
                                 </div>
                                 <div class="mt-4 hidden" data-expand-container>
-                                    <button class="px-3 py-2 text-sm bg-white ring-1 ring-gray-200 rounded hover:bg-gray-50" data-expand-btn>Show more</button>
+                                    <button class="px-3 py-2 text-sm bg-white ring-1 ring-gray-200 rounded hover:bg-gray-50" data-expand-btn>Показать больше</button>
                                 </div>
                             </div>
                         </section>
@@ -75,14 +75,14 @@
     <div class="mobile-drawer" id="mobileDrawer" aria-hidden="true">
         <div class="mobile-drawer-panel">
             <div class="flex items-center justify-between mb-3">
-                <h3 class="text-base font-semibold">Contents</h3>
-                <button id="closeDrawer" class="px-3 py-1.5 bg-gray-100 rounded">Close</button>
+                <h3 class="text-base font-semibold">Содержание</h3>
+                <button id="closeDrawer" class="px-3 py-1.5 bg-gray-100 rounded">Закрыть</button>
             </div>
             <nav>
                 <ul class="divide-y divide-gray-100">
                     @foreach($tale->sections as $section)
                         <li>
-                            <a href="#{{ $section->anchor }}" class="block py-2 text-gray-800" data-anchor="{{ $section->anchor }}">{{ $section->title ?? 'Section' }}</a>
+                            <a href="#{{ $section->anchor }}" class="block py-2 text-gray-800" data-anchor="{{ $section->anchor }}">{{ $section->title ?? 'Раздел' }}</a>
                         </li>
                     @endforeach
                 </ul>
@@ -92,7 +92,7 @@
     </div>
 
     <!-- Back to top button -->
-    <button id="backToTop" class="px-3 py-2 rounded-lg bg-indigo-600 text-white shadow hover:bg-indigo-700">Top</button>
+    <button id="backToTop" class="px-3 py-2 rounded-lg bg-indigo-600 text-white shadow hover:bg-indigo-700">Вверх</button>
 </div>
 @endsection
 
@@ -213,7 +213,7 @@
         document.body.classList.toggle('bg-gray-50', !enabled);
         document.body.classList.toggle('bg-neutral-900', enabled);
         document.body.classList.toggle('text-neutral-100', enabled);
-        togTheme.textContent = enabled ? 'Light' : 'Dark';
+        togTheme.textContent = enabled ? 'Светлая' : 'Темная';
         localStorage.setItem('readerDark', enabled ? '1' : '0');
     }
     togTheme && togTheme.addEventListener('click', () => setDark(!(localStorage.getItem('readerDark') === '1')));
