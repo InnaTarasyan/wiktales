@@ -60,7 +60,7 @@ class ImportTalesFromDocx extends Command
             }
 
             $baseName = pathinfo($fullPath, PATHINFO_FILENAME);
-            $proposedTitle = trim((string)($data['title'] ?? ''));
+            $proposedTitle = $this->getCorrectTitle($baseName, $data['title'] ?? '');
             $slug = Str::slug($proposedTitle !== '' ? $proposedTitle : $baseName);
             // Avoid generic titles causing collisions; ensure uniqueness across tales
             $ensureUnique = function (string $trySlug) use ($baseName, $fullPath) {
@@ -113,5 +113,44 @@ class ImportTalesFromDocx extends Command
 
         $this->info('Импорт завершен.');
         return self::SUCCESS;
+    }
+
+    /**
+     * Get the correct title for a file based on filename mapping
+     */
+    private function getCorrectTitle(string $filename, string $extractedTitle): string
+    {
+        $titleMapping = [
+            '1 Faun' => 'ФАВН',
+            '2 Tanz der Empussa' => 'ТАНЕЦ    ЭМПУСЫ',
+            '3 Volontären für Kirka' => 'КИРКИ',
+            '4 Argonauten' => 'ARGONAUTEN',
+            '5-Vandimenen Eiland' => 'VANDIMENEN EILAND',
+            '1-Fortinbras ist gekommen' => 'FORTINBRAS IST GEKOMMEN',
+            '1-Weiße Stirn. Grenze' => 'БЕЛОЛОБЫЙ. РУБЕЖ',
+            '1.Im Gesetzkörper (Säule und Mond) ' => 'ЛУНА И СТОЛБ. В ТЕЛЕ ЗАКОНА',
+            '2-Blauenstadt' => 'BLAUENSTADT',
+            '2-Velichan' => 'ВЕЛИХАН',
+            '2.Melisanda ' => 'МЕЛИСАНДА. ПОПЫТКА ОДНОЙ РЕАБИЛИТАЦИИ',
+            '2.Драконья гора ' => 'Драконья Гора',
+            '3-Blick werfen der Mond,Herr Oberst!' => 'ВЗГЛЯНЕМ НА ЛУНУ, ПОЛКОВНИК!',
+            '3.Berchtesgaden ' => 'BERCHESTCADEN',
+            '3.Пороги Луны ' => 'Пороги Луны',
+            '4.Krähen Freiheit ' => ' ВОРОНЬЯ   СЛОБОДА',
+            '4.Плесень в Храме ' => 'Плесень в Храме',
+            '5.Anadyr ' => 'Anadyr',
+            '5.Пленэр ' => 'Пленэр',
+            '6.Малые формы ' => 'Малые формы',
+            '7.Либретто ' => 'Либретто',
+            '8.Романтический хулиган ' => 'Романтический хулиган',
+        ];
+
+        // Check if we have a mapping for this filename (without extension)
+        if (isset($titleMapping[$filename])) {
+            return $titleMapping[$filename];
+        }
+
+        // Fallback to extracted title or filename
+        return trim($extractedTitle) !== '' ? trim($extractedTitle) : $filename;
     }
 }
