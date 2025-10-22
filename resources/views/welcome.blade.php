@@ -14,8 +14,8 @@
                 </span>
             </h1>
             <p class="text-xl sm:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto">
-                Погрузитесь в мир многоязычной литературы: от психологических повестей до китайской поэзии, 
-                от шекспировских мотивов до философских размышлений. Каждая история — это путешествие через культуры и эпохи.
+                Откройте уникальную коллекцию: от психологических повестей о городском отчуждении до классической китайской поэзии, 
+                от шекспировских мотивов до экспериментальной прозы. Каждое произведение — это мост между культурами и эпохами.
             </p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
                 <a href="{{ route('home') }}" 
@@ -55,9 +55,9 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
                     </svg>
                 </div>
-                <h3 class="text-xl font-semibold text-gray-900 mb-2">Многоязычная литература</h3>
+                <h3 class="text-xl font-semibold text-gray-900 mb-2">Экспериментальная литература</h3>
                 <p class="text-gray-600">
-                    Русская проза, немецкая философия, китайская поэзия и античные мотивы в одной коллекции.
+                    От мифологических повестей до минималистичной поэзии, от оперных либретто до философских диалогов.
                 </p>
             </div>
 
@@ -68,9 +68,9 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
                     </svg>
                 </div>
-                <h3 class="text-xl font-semibold text-gray-900 mb-2">Философская глубина</h3>
+                <h3 class="text-xl font-semibold text-gray-900 mb-2">Экзистенциальная глубина</h3>
                 <p class="text-gray-600">
-                    Произведения, затрагивающие вечные темы: судьба, свобода, природа, человеческая душа.
+                    Произведения, исследующие природу реальности, человеческое одиночество и поиск смысла в современном мире.
                 </p>
             </div>
 
@@ -81,10 +81,41 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
                     </svg>
                 </div>
-                <h3 class="text-xl font-semibold text-gray-900 mb-2">Культурное наследие</h3>
+                <h3 class="text-xl font-semibold text-gray-900 mb-2">Многоязычная коллекция</h3>
                 <p class="text-gray-600">
-                    Сохранение и передача литературных традиций разных народов и эпох.
+                    Русская проза, немецкая философия, китайская поэзия и античные мотивы в едином пространстве.
                 </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Featured Works Section -->
+    <div class="bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+                    Избранные произведения
+                </h2>
+                <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                    Познакомьтесь с некоторыми уникальными работами из нашей коллекции
+                </p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-gradient-to-br from-amber-50 to-amber-100 rounded-xl shadow-sm p-6 hover:shadow-md transition-shadow duration-300">
+                    <div class="text-2xl font-bold text-amber-600 mb-2">"Фаун"</div>
+                    <p class="text-gray-600 text-sm mb-3">Психологическая повесть о городском отчуждении и поиске смысла в современном мире</p>
+                    <div class="text-xs text-gray-500">Русская проза • Экзистенциальная литература</div>
+                </div>
+                <div class="bg-gradient-to-br from-rose-50 to-rose-100 rounded-xl shadow-sm p-6 hover:shadow-md transition-shadow duration-300">
+                    <div class="text-2xl font-bold text-rose-600 mb-2">"Ритмы поднебесной"</div>
+                    <p class="text-gray-600 text-sm mb-3">Классическая китайская поэзия с философскими размышлениями о природе и времени</p>
+                    <div class="text-xs text-gray-500">Китайская поэзия • Философская лирика</div>
+                </div>
+                <div class="bg-gradient-to-br from-slate-50 to-slate-100 rounded-xl shadow-sm p-6 hover:shadow-md transition-shadow duration-300">
+                    <div class="text-2xl font-bold text-slate-600 mb-2">"Танц Эмпусы"</div>
+                    <p class="text-gray-600 text-sm mb-3">Мифологическая экспериментальная проза, исследующая древние архетипы</p>
+                    <div class="text-xs text-gray-500">Экспериментальная проза • Мифология</div>
+                </div>
             </div>
         </div>
     </div>
@@ -98,9 +129,9 @@
                         О Виктейлс
                     </h2>
                     <p class="text-lg text-gray-600 mb-6">
-                        Виктейлс — это уникальная литературная платформа, объединяющая произведения разных культур и эпох. 
-                        От психологических повестей до китайской поэзии, от шекспировских мотивов до философских размышлений — 
-                        каждая работа в нашей коллекции открывает новые горизонты понимания.
+                        Виктейлс — это уникальная литературная платформа, объединяющая редкие произведения разных культур и эпох. 
+                        От психологических повестей о городском отчуждении до классической китайской поэзии, от шекспировских мотивов 
+                        до экспериментальной прозы — каждая работа в нашей коллекции открывает новые горизонты понимания человеческого опыта.
                     </p>
                     <p class="text-lg text-gray-600 mb-8">
                         Наша миссия — сохранить и передать богатство мировой литературы, создавая мосты между культурами 
@@ -129,12 +160,12 @@
                                 <div class="text-sm text-gray-600">Языка</div>
                             </div>
                             <div class="bg-white rounded-lg p-4 shadow-sm">
-                                <div class="text-2xl font-bold text-slate-600">3</div>
-                                <div class="text-sm text-gray-600">Культуры</div>
+                                <div class="text-2xl font-bold text-slate-600">6</div>
+                                <div class="text-sm text-gray-600">Жанров</div>
                             </div>
                             <div class="bg-white rounded-lg p-4 shadow-sm">
                                 <div class="text-2xl font-bold text-emerald-600">∞</div>
-                                <div class="text-sm text-gray-600">Вдохновение</div>
+                                <div class="text-sm text-gray-600">Идей</div>
                             </div>
                         </div>
                     </div>
