@@ -112,33 +112,45 @@ class DocxParser
             }
         }
         
-        // Process the TOC entries
-        foreach ($buffer as $i => $title) {
-            $toc[] = [ 
-                'title' => trim($title), 
-                'order' => $i + 1 
-            ];
+        // Process the TOC entries, avoiding duplicates
+        $seenTitles = [];
+        $order = 1;
+        foreach ($buffer as $title) {
+            $normalizedTitle = mb_strtolower(trim($title));
+            if (!in_array($normalizedTitle, $seenTitles)) {
+                $seenTitles[] = $normalizedTitle;
+                $toc[] = [ 
+                    'title' => trim($title), 
+                    'order' => $order++
+                ];
+            }
         }
 
         // Sections: create sections based on TOC entries
         $sections = [];
         
         if (!empty($toc)) {
-            // Create sections based on TOC entries
+            // Create sections based on TOC entries, avoiding duplicates
+            $seenTitles = [];
             foreach ($toc as $tocEntry) {
-                $anchor = Str::slug($tocEntry['title']);
-                $sections[] = [
-                    'title' => $tocEntry['title'],
-                    'anchor' => $anchor,
-                    'body_html' => '',
-                    'body_text' => ''
-                ];
+                $normalizedTitle = mb_strtolower(trim($tocEntry['title']));
+                if (!in_array($normalizedTitle, $seenTitles)) {
+                    $seenTitles[] = $normalizedTitle;
+                    $anchor = Str::slug($tocEntry['title']);
+                    $sections[] = [
+                        'title' => $tocEntry['title'],
+                        'anchor' => $anchor,
+                        'body_html' => '',
+                        'body_text' => ''
+                    ];
+                }
             }
             
             // Now try to find content for each section by looking for section titles in the text
             $currentSectionIndex = 0;
             $inContent = false;
             $skipToc = false;
+            $foundFirstSection = false;
             
             foreach ($lines as $l) {
                 $t = trim($l['text']);
@@ -160,15 +172,19 @@ class DocxParser
                 
                 if ($skipToc) continue;
                 
-                // Check if this line matches a section title
+                // Check if this line matches a section title (look for numbered titles like "1.ПРОДЕЛКИ ФАВНА")
                 $foundSection = false;
-                for ($i = $currentSectionIndex; $i < count($sections); $i++) {
-                    if (stripos($t, $sections[$i]['title']) !== false || 
-                        stripos($sections[$i]['title'], $t) !== false) {
-                        $currentSectionIndex = $i;
-                        $inContent = true;
-                        $foundSection = true;
-                        break;
+                if (preg_match('/^\d+\.\s*(.+)$/u', $t, $matches)) {
+                    $sectionTitle = trim($matches[1]);
+                    // Find matching section by comparing with TOC entries
+                    for ($i = 0; $i < count($sections); $i++) {
+                        if (mb_strtolower($sectionTitle) === mb_strtolower($sections[$i]['title'])) {
+                            $currentSectionIndex = $i;
+                            $inContent = true;
+                            $foundSection = true;
+                            $foundFirstSection = true;
+                            break;
+                        }
                     }
                 }
                 
