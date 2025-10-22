@@ -81,19 +81,19 @@ class DocxParser
         $toc = [];
         $inToc = false;
         $buffer = [];
+        $foundContent = false;
         
         foreach ($lines as $l) {
             $t = preg_replace('/\s+/u', ' ', $l['text']);
             if ($t === '') { 
-                if ($inToc && count($buffer) > 0) break; 
                 continue; 
             }
             
             // Check if this line starts with a number followed by a dot (like "1.", "2.", etc.)
             if (preg_match('/^\d+\.\s*(.+)$/u', $t, $matches)) {
                 $inToc = true;
-                // Clean the title by removing trailing dots and page numbers
-                // Remove any trailing dots, spaces, and page numbers
+                // Clean the title by removing trailing dots, spaces, and page numbers
+                // Remove any trailing dots, spaces, and page numbers at the end
                 $cleanTitle = preg_replace('/[\.\s]*\d+[\.\s]*$/u', '', $matches[1]);
                 // Remove any remaining trailing dots, spaces, and other punctuation
                 $cleanTitle = preg_replace('/[\.\s\p{P}]+$/u', '', $cleanTitle);
@@ -101,7 +101,14 @@ class DocxParser
                 $buffer[] = $cleanTitle;
                 continue;
             } else {
-                if ($inToc) break;
+                // If we're in TOC and encounter a non-numbered line, check if it's still part of TOC
+                if ($inToc) {
+                    // If it's not a numbered line and not empty, we're probably done with TOC
+                    if (trim($t) !== '' && !preg_match('/^[А-ЯЁ\s]+$/u', $t)) {
+                        $foundContent = true;
+                        break;
+                    }
+                }
             }
         }
         
@@ -113,22 +120,83 @@ class DocxParser
             ];
         }
 
-        // Sections: split by Heading 1
+        // Sections: create sections based on TOC entries
         $sections = [];
-        $current = null;
-        foreach ($lines as $l) {
-            if (in_array($l['style'], ['Heading1', 'Heading 1'])) {
-                if ($current !== null) { $sections[] = $current; }
-                $anchor = Str::slug($l['text']);
-                $current = [ 'title' => $l['text'], 'anchor' => $anchor, 'body_html' => '', 'body_text' => '' ];
-                continue;
+        
+        if (!empty($toc)) {
+            // Create sections based on TOC entries
+            foreach ($toc as $tocEntry) {
+                $anchor = Str::slug($tocEntry['title']);
+                $sections[] = [
+                    'title' => $tocEntry['title'],
+                    'anchor' => $anchor,
+                    'body_html' => '',
+                    'body_text' => ''
+                ];
             }
-            if ($current !== null && $l['text'] !== '') {
-                $current['body_text'] .= ($current['body_text'] ? "\n" : '') . $l['text'];
-                $current['body_html'] .= '<p>' . e($l['text']) . '</p>';
+            
+            // Now try to find content for each section by looking for section titles in the text
+            $currentSectionIndex = 0;
+            $inContent = false;
+            $skipToc = false;
+            
+            foreach ($lines as $l) {
+                $t = trim($l['text']);
+                if ($t === '') continue;
+                
+                // Skip TOC section
+                if ($t === 'СОДЕРЖАНИЕ') {
+                    $skipToc = true;
+                    continue;
+                }
+                
+                if ($skipToc && preg_match('/^\d+\.\s*(.+)$/u', $t)) {
+                    continue; // Skip TOC entries
+                }
+                
+                if ($skipToc && !preg_match('/^\d+\.\s*(.+)$/u', $t) && $t !== '') {
+                    $skipToc = false; // We're past the TOC
+                }
+                
+                if ($skipToc) continue;
+                
+                // Check if this line matches a section title
+                $foundSection = false;
+                for ($i = $currentSectionIndex; $i < count($sections); $i++) {
+                    if (stripos($t, $sections[$i]['title']) !== false || 
+                        stripos($sections[$i]['title'], $t) !== false) {
+                        $currentSectionIndex = $i;
+                        $inContent = true;
+                        $foundSection = true;
+                        break;
+                    }
+                }
+                
+                if (!$foundSection && $inContent && $currentSectionIndex < count($sections)) {
+                    // This is content for the current section
+                    $sections[$currentSectionIndex]['body_text'] .= 
+                        ($sections[$currentSectionIndex]['body_text'] ? "\n" : '') . $t;
+                    $sections[$currentSectionIndex]['body_html'] .= 
+                        '<p>' . e($t) . '</p>';
+                }
             }
+        } else {
+            // Fallback: try to find sections by looking for numbered titles in the text
+            $current = null;
+            foreach ($lines as $l) {
+                if (in_array($l['style'], ['Heading1', 'Heading 1'])) {
+                    if ($current !== null) { $sections[] = $current; }
+                    $anchor = Str::slug($l['text']);
+                    $current = [ 'title' => $l['text'], 'anchor' => $anchor, 'body_html' => '', 'body_text' => '' ];
+                    continue;
+                }
+                if ($current !== null && $l['text'] !== '') {
+                    $current['body_text'] .= ($current['body_text'] ? "\n" : '') . $l['text'];
+                    $current['body_html'] .= '<p>' . e($l['text']) . '</p>';
+                }
+            }
+            if ($current !== null) { $sections[] = $current; }
         }
-        if ($current !== null) { $sections[] = $current; }
 
         // Fallback: if no sections detected, create one section with all content minus title
         if (count($sections) === 0) {
