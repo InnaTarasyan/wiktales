@@ -101,6 +101,7 @@
                 </p>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- First Row -->
                 <div class="bg-gradient-to-br from-amber-50 to-amber-100 rounded-xl shadow-sm p-6 hover:shadow-md transition-shadow duration-300">
                     <div class="text-2xl font-bold text-amber-600 mb-2">"Фаун"</div>
                     <p class="text-gray-600 text-sm mb-3">Психологическая повесть о городском отчуждении и поиске смысла в современном мире</p>
@@ -115,6 +116,57 @@
                     <div class="text-2xl font-bold text-slate-600 mb-2">"Танц Эмпусы"</div>
                     <p class="text-gray-600 text-sm mb-3">Мифологическая экспериментальная проза, исследующая древние архетипы</p>
                     <div class="text-xs text-gray-500">Экспериментальная проза • Мифология</div>
+                </div>
+                
+                <!-- Second Row -->
+                <div class="bg-gradient-to-br from-emerald-50 to-emerald-100 rounded-xl shadow-sm p-6 hover:shadow-md transition-shadow duration-300">
+                    <div class="text-2xl font-bold text-emerald-600 mb-2">"Fortinbras ist gekommen"</div>
+                    <p class="text-gray-600 text-sm mb-3">Гамлетовские мотивы в современной немецкой прозе, исследующей темы мести и судьбы</p>
+                    <div class="text-xs text-gray-500">Немецкая проза • Шекспировские мотивы</div>
+                </div>
+                <div class="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl shadow-sm p-6 hover:shadow-md transition-shadow duration-300">
+                    <div class="text-2xl font-bold text-purple-600 mb-2">"Мелисанда"</div>
+                    <p class="text-gray-600 text-sm mb-3">Психологическая драма с отсылками к Метерлинку, исследующая любовь и ревность</p>
+                    <div class="text-xs text-gray-500">Русская проза • Психологическая драма</div>
+                </div>
+                <div class="bg-gradient-to-br from-indigo-50 to-indigo-100 rounded-xl shadow-sm p-6 hover:shadow-md transition-shadow duration-300">
+                    <div class="text-2xl font-bold text-indigo-600 mb-2">"Драконья гора"</div>
+                    <p class="text-gray-600 text-sm mb-3">Китайская пейзажная поэзия, воспевающая красоту природы и философию даосизма</p>
+                    <div class="text-xs text-gray-500">Китайская поэзия • Пейзажная лирика</div>
+                </div>
+                
+                <!-- Third Row -->
+                <div class="bg-gradient-to-br from-teal-50 to-teal-100 rounded-xl shadow-sm p-6 hover:shadow-md transition-shadow duration-300">
+                    <div class="text-2xl font-bold text-teal-600 mb-2">"Почтамт 76"</div>
+                    <p class="text-gray-600 text-sm mb-3">Кафкианская повесть о бюрократическом абсурде и экзистенциальном ужасе</p>
+                    <div class="text-xs text-gray-500">Русская проза • Абсурдистская литература</div>
+                </div>
+                <div class="bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl shadow-sm p-6 hover:shadow-md transition-shadow duration-300">
+                    <div class="text-2xl font-bold text-orange-600 mb-2">"Пороги Луны"</div>
+                    <p class="text-gray-600 text-sm mb-3">Современная поэзия, исследующая темы одиночества и поиска смысла в ночном пейзаже</p>
+                    <div class="text-xs text-gray-500">Русская поэзия • Современная лирика</div>
+                </div>
+                <div class="bg-gradient-to-br from-cyan-50 to-cyan-100 rounded-xl shadow-sm p-6 hover:shadow-md transition-shadow duration-300">
+                    <div class="text-2xl font-bold text-cyan-600 mb-2">"Берчтесгаден"</div>
+                    <p class="text-gray-600 text-sm mb-3">Историческая проза, размышляющая о прошлом и его влиянии на настоящее</p>
+                    <div class="text-xs text-gray-500">Немецкая проза • Историческая литература</div>
+                </div>
+                
+                <!-- Fourth Row -->
+                <div class="bg-gradient-to-br from-pink-50 to-pink-100 rounded-xl shadow-sm p-6 hover:shadow-md transition-shadow duration-300">
+                    <div class="text-2xl font-bold text-pink-600 mb-2">"Аргонавты"</div>
+                    <p class="text-gray-600 text-sm mb-3">Мифологическая проза, переосмысливающая древнегреческие легенды в современном контексте</p>
+                    <div class="text-xs text-gray-500">Русская проза • Мифологическая литература</div>
+                </div>
+                <div class="bg-gradient-to-br from-lime-50 to-lime-100 rounded-xl shadow-sm p-6 hover:shadow-md transition-shadow duration-300">
+                    <div class="text-2xl font-bold text-lime-600 mb-2">"Плесень в Храме"</div>
+                    <p class="text-gray-600 text-sm mb-3">Философская проза о духовном упадке и поиске истины в современном мире</p>
+                    <div class="text-xs text-gray-500">Русская проза • Философская литература</div>
+                </div>
+                <div class="bg-gradient-to-br from-violet-50 to-violet-100 rounded-xl shadow-sm p-6 hover:shadow-md transition-shadow duration-300">
+                    <div class="text-2xl font-bold text-violet-600 mb-2">"Малые формы"</div>
+                    <p class="text-gray-600 text-sm mb-3">Минималистичная поэзия в стиле хайку, исследующая мгновения и вечность</p>
+                    <div class="text-xs text-gray-500">Русская поэзия • Минимализм</div>
                 </div>
             </div>
         </div>
