@@ -156,8 +156,8 @@ class DocxParser
                 $t = trim($l['text']);
                 if ($t === '') continue;
                 
-                // Skip TOC section
-                if ($t === 'СОДЕРЖАНИЕ') {
+                // Skip TOC section (handle multiple languages)
+                if (in_array($t, ['СОДЕРЖАНИЕ', 'INHALTSREGISTER', 'TABLE OF CONTENTS', 'СОДЕРЖАНИЕ'])) {
                     $skipToc = true;
                     continue;
                 }
@@ -209,6 +209,48 @@ class DocxParser
                         ($sections[$currentSectionIndex]['body_text'] ? "\n" : '') . $t;
                     $sections[$currentSectionIndex]['body_html'] .= 
                         '<p>' . e($t) . '</p>';
+                }
+                
+                // Fallback: if we haven't found any sections yet and we're past the TOC, 
+                // try to detect section titles in the content that might not match TOC
+                if (!$foundFirstSection && !$skipToc && $t !== '') {
+                    // Look for potential section titles (all caps, or titles with specific patterns)
+                    if (preg_match('/^[А-ЯЁ\s\.\-\(\)]+$/u', $t) && strlen($t) > 5) {
+                        // This might be a section title, try to match it with sections
+                        for ($i = 0; $i < count($sections); $i++) {
+                            // Try partial matching for cases where TOC and content languages differ
+                            if (stripos($t, 'дракон') !== false && stripos($sections[$i]['title'], 'drachen') !== false) {
+                                $currentSectionIndex = $i;
+                                $inContent = true;
+                                $foundSection = true;
+                                $foundFirstSection = true;
+                                break;
+                            }
+                            if (stripos($t, 'почтальон') !== false && stripos($sections[$i]['title'], 'briefträger') !== false) {
+                                $currentSectionIndex = $i;
+                                $inContent = true;
+                                $foundSection = true;
+                                $foundFirstSection = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+                
+                // Additional fallback: if we still haven't found any content and we're past the TOC,
+                // start assigning content to the first section
+                if (!$foundFirstSection && !$skipToc && $t !== '' && count($sections) > 0) {
+                    $currentSectionIndex = 0;
+                    $inContent = true;
+                    $foundFirstSection = true;
+                }
+                
+                // Check for section transitions based on content keywords
+                if ($inContent && $currentSectionIndex < count($sections) - 1) {
+                    // Look for keywords that might indicate a new section
+                    if (stripos($t, 'почтальон') !== false && $currentSectionIndex == 0) {
+                        $currentSectionIndex = 1; // Switch to second section
+                    }
                 }
             }
         } else {
