@@ -3,18 +3,18 @@
 @section('title', 'Коллекция сказок')
 
 @section('content')
-<div class="bg-gradient-to-br from-slate-50 to-blue-50 min-h-screen">
+<div class="bookshelf-background min-h-screen">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div class="text-center mb-12">
-            <h1 class="text-4xl sm:text-5xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent mb-4">
+        <div class="text-center mb-12 relative z-10">
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent mb-4 drop-shadow-sm">
                 Коллекция сказок
             </h1>
-            <p class="text-gray-600 text-lg max-w-2xl mx-auto">
+            <p class="text-gray-700 text-base sm:text-lg max-w-2xl mx-auto drop-shadow-sm">
                 Откройте удивительные истории и приключения в нашей тщательно отобранной коллекции сказок
             </p>
         </div>
         
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 sm:gap-8">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-6 md:gap-8 relative z-10">
             @foreach($tales as $tale)
                 <div class="book-card group">
                     <a href="{{ route('tales.show', $tale) }}" class="block">
@@ -98,40 +98,87 @@
 
 @section('scripts')
 <style>
+    /* Enhanced book card with realistic 3D shadows */
     .book-card {
-        perspective: 1000px;
+        perspective: 1200px;
         transform-style: preserve-3d;
+        position: relative;
     }
     
     .book-cover {
         position: relative;
         transform-style: preserve-3d;
-        transition: all 0.3s ease;
+        transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         box-shadow: 
-            0 4px 8px rgba(0, 0, 0, 0.1),
-            0 2px 4px rgba(0, 0, 0, 0.06);
+            /* Main book shadow */
+            0 8px 16px rgba(0, 0, 0, 0.12),
+            0 4px 8px rgba(0, 0, 0, 0.08),
+            /* Inner shadow for depth */
+            inset 0 1px 0 rgba(255, 255, 255, 0.1),
+            /* Book binding shadow */
+            -2px 0 4px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        overflow: hidden;
     }
     
     .book-card:hover .book-cover {
-        transform: translateY(-8px) rotateX(5deg);
+        transform: translateY(-12px) rotateX(8deg) rotateY(-2deg);
         box-shadow: 
-            0 20px 40px rgba(0, 0, 0, 0.15),
-            0 10px 20px rgba(0, 0, 0, 0.1);
+            /* Enhanced hover shadows */
+            0 25px 50px rgba(0, 0, 0, 0.2),
+            0 15px 30px rgba(0, 0, 0, 0.15),
+            0 8px 16px rgba(0, 0, 0, 0.1),
+            /* Inner glow */
+            inset 0 1px 0 rgba(255, 255, 255, 0.2),
+            /* Enhanced binding shadow */
+            -4px 0 8px rgba(0, 0, 0, 0.15);
     }
     
+    /* Enhanced book spine with gradient and depth */
     .book-spine {
+        position: absolute;
+        left: -12px;
+        top: 0;
+        width: 12px;
+        height: 100%;
+        background: linear-gradient(90deg, 
+            #6b46c1 0%, 
+            #8b5cf6 25%, 
+            #a855f7 50%, 
+            #8b5cf6 75%, 
+            #6b46c1 100%);
+        transform: rotateY(-90deg);
+        transform-origin: right center;
+        border-radius: 6px 0 0 6px;
+        box-shadow: 
+            inset 2px 0 4px rgba(0, 0, 0, 0.2),
+            -2px 0 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Enhanced book pages with layered effect */
+    .book-pages {
         position: absolute;
         left: -8px;
         top: 0;
         width: 8px;
         height: 100%;
-        background: linear-gradient(90deg, #8b5cf6, #a855f7);
+        background: linear-gradient(90deg, 
+            #f8fafc 0%, 
+            #f1f5f9 25%, 
+            #e2e8f0 50%, 
+            #f1f5f9 75%, 
+            #f8fafc 100%);
         transform: rotateY(-90deg);
         transform-origin: right center;
         border-radius: 4px 0 0 4px;
+        box-shadow: 
+            inset 1px 0 2px rgba(0, 0, 0, 0.1),
+            -1px 0 2px rgba(0, 0, 0, 0.05);
     }
     
-    .book-pages {
+    /* Additional page layers for realism */
+    .book-pages::before {
+        content: '';
         position: absolute;
         left: -4px;
         top: 0;
@@ -141,6 +188,7 @@
         transform: rotateY(-90deg);
         transform-origin: right center;
         border-radius: 2px 0 0 2px;
+        box-shadow: inset 1px 0 1px rgba(0, 0, 0, 0.05);
     }
     
     .book-title {
@@ -158,6 +206,9 @@
         justify-content: center;
         color: #6b7280;
         font-size: 0.875rem;
+        box-shadow: 
+            inset 0 2px 4px rgba(0, 0, 0, 0.1),
+            0 1px 2px rgba(0, 0, 0, 0.05);
     }
     
     .book-placeholder::before {
@@ -166,12 +217,40 @@
         margin-bottom: 0.5rem;
     }
     
+    /* Bookshelf-like background with subtle wood texture */
+    .bookshelf-background {
+        background: 
+            linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%),
+            repeating-linear-gradient(
+                90deg,
+                transparent 0px,
+                transparent 98px,
+                rgba(139, 92, 246, 0.03) 100px
+            );
+        position: relative;
+    }
+    
+    .bookshelf-background::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: 
+            radial-gradient(circle at 20% 20%, rgba(139, 92, 246, 0.05) 0%, transparent 50%),
+            radial-gradient(circle at 80% 80%, rgba(168, 85, 247, 0.05) 0%, transparent 50%);
+        pointer-events: none;
+    }
+    
     .pagination {
         display: flex;
         justify-content: center;
         align-items: center;
         gap: 0.5rem;
         margin-top: 3rem;
+        position: relative;
+        z-index: 10;
     }
     
     .pagination a,
@@ -182,20 +261,90 @@
         width: 2.5rem;
         height: 2.5rem;
         border-radius: 8px;
-        font-weight: 600;
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(139, 92, 246, 0.2);
+        color: #6b46c1;
+        font-weight: 500;
         transition: all 0.3s ease;
-        text-decoration: none;
-    }
-    
-    .pagination a {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
     
     .pagination a:hover {
+        background: rgba(139, 92, 246, 0.1);
         transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+    
+    .pagination .active {
+        background: linear-gradient(135deg, #8b5cf6, #a855f7);
+        color: white;
+        box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+    }
+    
+    /* Mobile responsive improvements */
+    @media (max-width: 640px) {
+        .book-card {
+            perspective: 800px;
+        }
+        
+        .book-cover {
+            box-shadow: 
+                0 6px 12px rgba(0, 0, 0, 0.1),
+                0 3px 6px rgba(0, 0, 0, 0.06),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1),
+                -1px 0 3px rgba(0, 0, 0, 0.08);
+        }
+        
+        .book-card:hover .book-cover {
+            transform: translateY(-8px) rotateX(5deg) rotateY(-1deg);
+            box-shadow: 
+                0 15px 30px rgba(0, 0, 0, 0.15),
+                0 8px 16px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2),
+                -2px 0 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .book-spine {
+            left: -8px;
+            width: 8px;
+        }
+        
+        .book-pages {
+            left: -6px;
+            width: 6px;
+        }
+        
+        .book-pages::before {
+            left: -3px;
+            width: 3px;
+        }
+        
+        .pagination {
+            margin-top: 2rem;
+            gap: 0.25rem;
+        }
+        
+        .pagination a,
+        .pagination span {
+            width: 2rem;
+            height: 2rem;
+            font-size: 0.875rem;
+        }
+    }
+    
+    /* Tablet responsive improvements */
+    @media (min-width: 641px) and (max-width: 1024px) {
+        .book-card:hover .book-cover {
+            transform: translateY(-10px) rotateX(6deg) rotateY(-1.5deg);
+        }
+    }
+    
+    /* Large screen enhancements */
+    @media (min-width: 1280px) {
+        .book-card:hover .book-cover {
+            transform: translateY(-15px) rotateX(10deg) rotateY(-3deg);
+        }
     }
     
     .pagination .current {
@@ -214,24 +363,6 @@
     .pagination .disabled:hover {
         transform: none;
         box-shadow: none;
-    }
-    
-    @media (max-width: 640px) {
-        .book-card:hover .book-cover {
-            transform: translateY(-4px);
-        }
-        
-        .pagination {
-            gap: 0.25rem;
-            flex-wrap: wrap;
-        }
-        
-        .pagination a,
-        .pagination span {
-            width: 2rem;
-            height: 2rem;
-            font-size: 0.875rem;
-        }
     }
 </style>
 @endsection
