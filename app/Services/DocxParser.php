@@ -172,13 +172,28 @@ class DocxParser
                 
                 if ($skipToc) continue;
                 
-                // Check if this line matches a section title (look for numbered titles like "1.ПРОДЕЛКИ ФАВНА")
+                // Check if this line matches a section title (look for numbered titles like "1.ПРОДЕЛКИ ФАВНА" or unnumbered titles)
                 $foundSection = false;
+                $sectionTitle = null;
+                
+                // First try numbered titles (like "1.ПРОДЕЛКИ ФАВНА")
                 if (preg_match('/^\d+\.\s*(.+)$/u', $t, $matches)) {
                     $sectionTitle = trim($matches[1]);
+                } else {
+                    // Try unnumbered titles - check if this line exactly matches a section title
+                    $sectionTitle = trim($t);
+                }
+                
+                if ($sectionTitle) {
                     // Find matching section by comparing with TOC entries
                     for ($i = 0; $i < count($sections); $i++) {
-                        if (mb_strtolower($sectionTitle) === mb_strtolower($sections[$i]['title'])) {
+                        // Normalize both strings for comparison (remove extra spaces, punctuation)
+                        $normalizedContentTitle = preg_replace('/\s+/', ' ', trim($sectionTitle));
+                        $normalizedContentTitle = preg_replace('/[\.\s]+$/', '', $normalizedContentTitle);
+                        $normalizedSectionTitle = preg_replace('/\s+/', ' ', trim($sections[$i]['title']));
+                        $normalizedSectionTitle = preg_replace('/[\.\s]+$/', '', $normalizedSectionTitle);
+                        
+                        if (mb_strtolower($normalizedContentTitle) === mb_strtolower($normalizedSectionTitle)) {
                             $currentSectionIndex = $i;
                             $inContent = true;
                             $foundSection = true;
