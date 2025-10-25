@@ -15,5 +15,8 @@ Route::get('/welcome', function () {
 // Individual tale route
 Route::get('/tales/{tale:slug}', [TaleController::class, 'show'])->name('tales.show');
 
+// Tale download route
+Route::get('/tales/{tale:slug}/download', [TaleController::class, 'download'])->name('tales.download');
+
 // Contact form route
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
