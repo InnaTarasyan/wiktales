@@ -16,9 +16,9 @@
         
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-6 md:gap-8 relative z-10">
             @foreach($tales as $tale)
-                <div class="book-card group">
-                    <a href="{{ route('tales.show', $tale) }}" class="block">
-                        <div class="book-cover bg-white rounded-lg overflow-hidden relative">
+                <div class="book-card group bg-white rounded-xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-100">
+                    <a href="{{ route('tales.show', $tale) }}" class="block h-full">
+                        <div class="book-cover bg-gradient-to-br from-gray-50 to-gray-100 rounded-t-xl overflow-hidden relative">
                             <!-- Book spine effect -->
                             <div class="book-spine"></div>
                             <div class="book-pages"></div>
@@ -26,25 +26,28 @@
                             @if($tale->cover_url)
                                 <img src="{{ $tale->cover_url }}" 
                                      alt="{{ $tale->title }} cover" 
-                                     class="w-full h-64 sm:h-72 object-cover transition-transform duration-300 group-hover:scale-105">
+                                     class="w-full h-56 sm:h-64 md:h-72 object-cover transition-transform duration-500 group-hover:scale-105">
                             @else
-                                <div class="w-full h-64 sm:h-72 book-placeholder">
-                                    Обложка недоступна
+                                <div class="w-full h-56 sm:h-64 md:h-72 book-placeholder flex items-center justify-center">
+                                    <div class="text-center">
+                                        <div class="text-4xl mb-2">📖</div>
+                                        <div class="text-gray-500 text-sm">Обложка недоступна</div>
+                                    </div>
                                 </div>
                             @endif
                             
                             <!-- Gradient overlay for better text readability -->
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                         </div>
                         
-                        <div class="mt-4 px-2">
-                            <h2 class="book-title font-bold text-lg sm:text-xl text-center leading-tight line-clamp-2 group-hover:text-purple-700 transition-colors duration-300">
+                        <div class="px-4 py-4 sm:px-5 sm:py-5 flex flex-col h-auto">
+                            <h2 class="book-title font-bold text-lg sm:text-xl md:text-2xl text-center leading-tight line-clamp-2 group-hover:text-purple-600 transition-colors duration-300 mb-3">
                                 {{ $tale->title }}
                             </h2>
                             
                             <!-- Tale description -->
-                            <div class="mt-2 sm:mt-3 px-2">
-                                <p class="text-gray-700 text-[10px] xs:text-[11px] sm:text-xs leading-snug sm:leading-relaxed line-clamp-4 text-center">
+                            <div class="flex-grow mb-3">
+                                <p class="text-gray-600 text-sm sm:text-base leading-relaxed line-clamp-4 text-center">
                                     @if(isset($tale->meta['description']))
                                         {{ $tale->meta['description'] }}
                                     @else
@@ -54,10 +57,10 @@
                             </div>
                             
                             <!-- Read more indicator -->
-                            <div class="flex items-center justify-center mt-3 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
-                                <span class="text-sm text-purple-600 font-medium flex items-center gap-1">
+                            <div class="flex items-center justify-center pt-2 mt-auto">
+                                <span class="text-sm text-purple-600 font-semibold flex items-center gap-2 group-hover:gap-3 transition-all duration-300 opacity-70 group-hover:opacity-100">
                                     Читать далее
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <svg class="w-5 h-5 transform group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                                     </svg>
                                 </span>
