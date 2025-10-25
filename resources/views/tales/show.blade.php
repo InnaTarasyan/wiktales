@@ -23,6 +23,25 @@
                                     </a>
                                     <span class="text-xs text-gray-400 ml-2">{{ $index + 1 }}</span>
                                 </div>
+                                @if($tale->slug === 'anadyr-2' && $index === 0)
+                                    <div class="ml-4 mt-2 mb-2 text-xs text-gray-600 leading-relaxed">
+                                        <a href="#poslanie-gollandtsa" class="toc-link text-gray-600 hover:text-indigo-600 transition-colors duration-200 block py-1">ПОСЛАНИЕ ГОЛЛАНДЦА</a>
+                                        <a href="#drevnyaya-pritcha" class="toc-link text-gray-600 hover:text-indigo-600 transition-colors duration-200 block py-1">ДРЕВНЯЯ ПРИТЧА</a>
+                                        <a href="#smert-pod-parusom" class="toc-link text-gray-600 hover:text-indigo-600 transition-colors duration-200 block py-1">СМЕРТЬ ПОД ПАРУСОМ</a>
+                                        <a href="#istoriya-metamorfoz-ogon" class="toc-link text-gray-600 hover:text-indigo-600 transition-colors duration-200 block py-1">ИСТОРИЯ МЕТАМОРФОЗ. ОГОНЬ</a>
+                                        <a href="#za-sozhzhennym-mostom" class="toc-link text-gray-600 hover:text-indigo-600 transition-colors duration-200 block py-1">ЗА СОЖЖЕННЫМ МОСТОМ</a>
+                                        <a href="#zhyoltaya-reka-vremena-goda" class="toc-link text-gray-600 hover:text-indigo-600 transition-colors duration-200 block py-1">ЖЁЛТАЯ РЕКА. ВРЕМЕНА ГОДА</a>
+                                        <a href="#pered-velikim-obledenieniem" class="toc-link text-gray-600 hover:text-indigo-600 transition-colors duration-200 block py-1">ПЕРЕД ВЕЛИКИМ ОБЛЕДЕНЕНИЕМ</a>
+                                        <a href="#zimnee-okno" class="toc-link text-gray-600 hover:text-indigo-600 transition-colors duration-200 block py-1">ЗИМНЕЕ ОКНО</a>
+                                        <a href="#ispoved-monstra" class="toc-link text-gray-600 hover:text-indigo-600 transition-colors duration-200 block py-1">ИСПОВЕДЬ МОНСТРА</a>
+                                        <a href="#mezhdu-tremya-ya" class="toc-link text-gray-600 hover:text-indigo-600 transition-colors duration-200 block py-1">МЕЖДУ ТРЕМЯ Я</a>
+                                        <a href="#luna-zimoy" class="toc-link text-gray-600 hover:text-indigo-600 transition-colors duration-200 block py-1">ЛУНА ЗИМОЙ</a>
+                                        <a href="#sobaka-o-trekh-nogakh" class="toc-link text-gray-600 hover:text-indigo-600 transition-colors duration-200 block py-1">СОБАКА О ТРЕХ НОГАХ</a>
+                                        <a href="#na-allee-dialog-s-lunoy" class="toc-link text-gray-600 hover:text-indigo-600 transition-colors duration-200 block py-1">НА АЛЛЕЕ. ДИАЛОГ С ЛУНОЙ</a>
+                                        <a href="#v-ozhidanii-poslednego-avtobusa" class="toc-link text-gray-600 hover:text-indigo-600 transition-colors duration-200 block py-1">В ОЖИДАНИИ ПОСЛЕДНЕГО АВТОБУСА</a>
+                                        <a href="#chelovek-ten" class="toc-link text-gray-600 hover:text-indigo-600 transition-colors duration-200 block py-1">ЧЕЛОВЕК-ТЕНЬ</a>
+                                    </div>
+                                @endif
                             @endforeach
                         </div>
                     </nav>
@@ -152,6 +171,25 @@
                             </a>
                             <span class="text-xs text-gray-400 ml-2">{{ $index + 1 }}</span>
                         </div>
+                        @if($tale->slug === 'anadyr-2' && $index === 0)
+                            <div class="ml-4 mt-2 mb-2 text-xs text-gray-600 leading-relaxed">
+                                <a href="#poslanie-gollandtsa" class="toc-link text-gray-600 hover:text-indigo-600 transition-colors duration-200 block py-1">ПОСЛАНИЕ ГОЛЛАНДЦА</a>
+                                <a href="#drevnyaya-pritcha" class="toc-link text-gray-600 hover:text-indigo-600 transition-colors duration-200 block py-1">ДРЕВНЯЯ ПРИТЧА</a>
+                                <a href="#smert-pod-parusom" class="toc-link text-gray-600 hover:text-indigo-600 transition-colors duration-200 block py-1">СМЕРТЬ ПОД ПАРУСОМ</a>
+                                <a href="#istoriya-metamorfoz-ogon" class="toc-link text-gray-600 hover:text-indigo-600 transition-colors duration-200 block py-1">ИСТОРИЯ МЕТАМОРФОЗ. ОГОНЬ</a>
+                                <a href="#za-sozhzhennym-mostom" class="toc-link text-gray-600 hover:text-indigo-600 transition-colors duration-200 block py-1">ЗА СОЖЖЕННЫМ МОСТОМ</a>
+                                <a href="#zhyoltaya-reka-vremena-goda" class="toc-link text-gray-600 hover:text-indigo-600 transition-colors duration-200 block py-1">ЖЁЛТАЯ РЕКА. ВРЕМЕНА ГОДА</a>
+                                <a href="#pered-velikim-obledenieniem" class="toc-link text-gray-600 hover:text-indigo-600 transition-colors duration-200 block py-1">ПЕРЕД ВЕЛИКИМ ОБЛЕДЕНЕНИЕМ</a>
+                                <a href="#zimnee-okno" class="toc-link text-gray-600 hover:text-indigo-600 transition-colors duration-200 block py-1">ЗИМНЕЕ ОКНО</a>
+                                <a href="#ispoved-monstra" class="toc-link text-gray-600 hover:text-indigo-600 transition-colors duration-200 block py-1">ИСПОВЕДЬ МОНСТРА</a>
+                                <a href="#mezhdu-tremya-ya" class="toc-link text-gray-600 hover:text-indigo-600 transition-colors duration-200 block py-1">МЕЖДУ ТРЕМЯ Я</a>
+                                <a href="#luna-zimoy" class="toc-link text-gray-600 hover:text-indigo-600 transition-colors duration-200 block py-1">ЛУНА ЗИМОЙ</a>
+                                <a href="#sobaka-o-trekh-nogakh" class="toc-link text-gray-600 hover:text-indigo-600 transition-colors duration-200 block py-1">СОБАКА О ТРЕХ НОГАХ</a>
+                                <a href="#na-allee-dialog-s-lunoy" class="toc-link text-gray-600 hover:text-indigo-600 transition-colors duration-200 block py-1">НА АЛЛЕЕ. ДИАЛОГ С ЛУНОЙ</a>
+                                <a href="#v-ozhidanii-poslednego-avtobusa" class="toc-link text-gray-600 hover:text-indigo-600 transition-colors duration-200 block py-1">В ОЖИДАНИИ ПОСЛЕДНЕГО АВТОБУСА</a>
+                                <a href="#chelovek-ten" class="toc-link text-gray-600 hover:text-indigo-600 transition-colors duration-200 block py-1">ЧЕЛОВЕК-ТЕНЬ</a>
+                            </div>
+                        @endif
                     @endforeach
                 </div>
             </nav>
