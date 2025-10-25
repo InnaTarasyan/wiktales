@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TaleController;
+use App\Http\Controllers\ContactController;
 
 // Main home page - Tales collection
 Route::get('/', [TaleController::class, 'index'])->name('home');
@@ -13,3 +14,6 @@ Route::get('/welcome', function () {
 
 // Individual tale route
 Route::get('/tales/{tale:slug}', [TaleController::class, 'show'])->name('tales.show');
+
+// Contact form route
+Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
