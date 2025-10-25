@@ -42,6 +42,17 @@
                                 {{ $tale->title }}
                             </h2>
                             
+                            <!-- Tale description -->
+                            <div class="mt-2 sm:mt-3 px-2">
+                                <p class="text-gray-700 text-[10px] xs:text-[11px] sm:text-xs leading-snug sm:leading-relaxed line-clamp-4 text-center">
+                                    @if(isset($tale->meta['description']))
+                                        {{ $tale->meta['description'] }}
+                                    @else
+                                        Уникальное произведение для настоящих ценителей литературы
+                                    @endif
+                                </p>
+                            </div>
+                            
                             <!-- Read more indicator -->
                             <div class="flex items-center justify-center mt-3 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
                                 <span class="text-sm text-purple-600 font-medium flex items-center gap-1">
