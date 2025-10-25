@@ -14,7 +14,7 @@
             </p>
         </div>
         
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-6 md:gap-8 relative z-10">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 sm:gap-6 md:gap-7 lg:gap-8 relative z-10 px-4 sm:px-6 md:px-8">
             @foreach($tales as $tale)
                 <div class="book-card group bg-white rounded-xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-100">
                     <a href="{{ route('tales.show', $tale) }}" class="block h-full">
@@ -117,35 +117,23 @@
         perspective: 1200px;
         transform-style: preserve-3d;
         position: relative;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .book-card:hover {
+        transform: translateY(-8px) scale(1.02);
     }
     
     .book-cover {
         position: relative;
         transform-style: preserve-3d;
-        transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        box-shadow: 
-            /* Main book shadow */
-            0 8px 16px rgba(0, 0, 0, 0.12),
-            0 4px 8px rgba(0, 0, 0, 0.08),
-            /* Inner shadow for depth */
-            inset 0 1px 0 rgba(255, 255, 255, 0.1),
-            /* Book binding shadow */
-            -2px 0 4px rgba(0, 0, 0, 0.1);
-        border-radius: 8px;
-        overflow: hidden;
+        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     }
     
     .book-card:hover .book-cover {
-        transform: translateY(-12px) rotateX(8deg) rotateY(-2deg);
         box-shadow: 
-            /* Enhanced hover shadows */
-            0 25px 50px rgba(0, 0, 0, 0.2),
-            0 15px 30px rgba(0, 0, 0, 0.15),
-            0 8px 16px rgba(0, 0, 0, 0.1),
-            /* Inner glow */
-            inset 0 1px 0 rgba(255, 255, 255, 0.2),
-            /* Enhanced binding shadow */
-            -4px 0 8px rgba(0, 0, 0, 0.15);
+            0 20px 40px rgba(0, 0, 0, 0.15),
+            0 10px 20px rgba(0, 0, 0, 0.1);
     }
     
     /* Enhanced book spine with gradient and depth */
@@ -299,39 +287,22 @@
     /* Mobile responsive improvements */
     @media (max-width: 640px) {
         .book-card {
-            perspective: 800px;
+            perspective: none;
+            margin-bottom: 1.5rem;
+        }
+        
+        .book-card:hover {
+            transform: translateY(-4px) scale(1.01);
+        }
+        
+        .book-spine,
+        .book-pages,
+        .book-pages::before {
+            display: none; /* Hide 3D effects on mobile for cleaner look */
         }
         
         .book-cover {
-            box-shadow: 
-                0 6px 12px rgba(0, 0, 0, 0.1),
-                0 3px 6px rgba(0, 0, 0, 0.06),
-                inset 0 1px 0 rgba(255, 255, 255, 0.1),
-                -1px 0 3px rgba(0, 0, 0, 0.08);
-        }
-        
-        .book-card:hover .book-cover {
-            transform: translateY(-8px) rotateX(5deg) rotateY(-1deg);
-            box-shadow: 
-                0 15px 30px rgba(0, 0, 0, 0.15),
-                0 8px 16px rgba(0, 0, 0, 0.1),
-                inset 0 1px 0 rgba(255, 255, 255, 0.2),
-                -2px 0 6px rgba(0, 0, 0, 0.1);
-        }
-        
-        .book-spine {
-            left: -8px;
-            width: 8px;
-        }
-        
-        .book-pages {
-            left: -6px;
-            width: 6px;
-        }
-        
-        .book-pages::before {
-            left: -3px;
-            width: 3px;
+            border-radius: 0.75rem 0.75rem 0 0;
         }
         
         .pagination {
@@ -349,15 +320,22 @@
     
     /* Tablet responsive improvements */
     @media (min-width: 641px) and (max-width: 1024px) {
-        .book-card:hover .book-cover {
-            transform: translateY(-10px) rotateX(6deg) rotateY(-1.5deg);
+        .book-card:hover {
+            transform: translateY(-6px) scale(1.015);
         }
     }
     
     /* Large screen enhancements */
     @media (min-width: 1280px) {
-        .book-card:hover .book-cover {
-            transform: translateY(-15px) rotateX(10deg) rotateY(-3deg);
+        .book-card:hover {
+            transform: translateY(-10px) scale(1.02);
+        }
+    }
+    
+    /* Touch device improvements */
+    @media (hover: none) and (pointer: coarse) {
+        .book-card:active {
+            transform: scale(0.98);
         }
     }
     
