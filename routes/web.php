@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TaleController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\ForumController;
 
 // Main home page - Tales collection
 Route::get('/', [TaleController::class, 'index'])->name('home');
@@ -20,3 +21,9 @@ Route::get('/tales/{tale:slug}/download', [TaleController::class, 'download'])->
 
 // Contact form route
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
+
+// Forum routes
+Route::get('/forum', [ForumController::class, 'index'])->name('forum.index');
+Route::post('/forum', [ForumController::class, 'storeTopic'])->name('forum.storeTopic');
+Route::get('/forum/{topic}', [ForumController::class, 'show'])->name('forum.show');
+Route::post('/forum/{topic}/answers', [ForumController::class, 'storeAnswer'])->name('forum.storeAnswer');

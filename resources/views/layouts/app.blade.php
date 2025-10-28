@@ -131,6 +131,10 @@
                            class="nav-link {{ request()->routeIs('welcome') ? 'active text-indigo-600' : 'text-gray-700 hover:text-indigo-600' }} px-3 py-2 text-sm font-medium">
                             О нас
                         </a>
+                        <a href="{{ url('/forum') }}" 
+                           class="nav-link {{ request()->is('forum*') ? 'active text-indigo-600' : 'text-gray-700 hover:text-indigo-600' }} px-3 py-2 text-sm font-medium">
+                            Форум
+                        </a>
                         <a href="#contact" 
                            class="nav-link text-gray-700 hover:text-indigo-600 px-3 py-2 text-sm font-medium">
                             Контакты
@@ -180,6 +184,10 @@
                         <a href="{{ route('welcome') }}" 
                            class="block px-3 py-2 text-base font-medium {{ request()->routeIs('welcome') ? 'text-indigo-600 bg-indigo-50 rounded-lg' : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50 rounded-lg' }}">
                             О нас
+                        </a>
+                        <a href="{{ url('/forum') }}" 
+                           class="block px-3 py-2 text-base font-medium {{ request()->is('forum*') ? 'text-indigo-600 bg-indigo-50 rounded-lg' : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50 rounded-lg' }}">
+                            Форум
                         </a>
                         <a href="#contact" 
                            class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50 rounded-lg">
