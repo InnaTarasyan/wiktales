@@ -10,7 +10,8 @@ Route::get('/', [TaleController::class, 'index'])->name('home');
 
 // Welcome page route
 Route::get('/welcome', function () {
-    return view('welcome');
+    $tales = \App\Models\Tale::orderBy('title')->get();
+    return view('welcome', compact('tales'));
 })->name('welcome');
 
 // Individual tale route
