@@ -42,7 +42,7 @@
                 </div>
             </div>
 
-            <article class="prose max-w-none bg-white rounded-xl shadow-lg ring-1 ring-gray-100 p-6 sm:p-8 md:p-10" id="readerArticle">
+            <article class="prose bg-white rounded-2xl shadow-xl ring-1 ring-gray-100/50 backdrop-blur-sm p-4 sm:p-6 md:p-8 lg:p-10 xl:p-12 mx-auto transition-all duration-300 ease-in-out" id="readerArticle">
                 @foreach($tale->sections as $section)
                     {!! $section->body_html !!}
                 @endforeach
@@ -76,6 +76,37 @@
     .reader-controls button {
         border-radius: 0.5rem;
     }
+    /* Modern article container styling */
+    #readerArticle {
+        max-width: 100%;
+        width: 100%;
+    }
+    
+    @media (min-width: 640px) {
+        #readerArticle {
+            max-width: 42rem;
+        }
+    }
+    
+    @media (min-width: 1024px) {
+        #readerArticle {
+            max-width: 48rem;
+        }
+    }
+    
+    @media (min-width: 1280px) {
+        #readerArticle {
+            max-width: 56rem;
+        }
+    }
+    
+    /* Touch-friendly hover effects (disabled on touch devices) */
+    @media (hover: hover) and (pointer: fine) {
+        #readerArticle:hover {
+            transform: translateY(-2px);
+        }
+    }
+    
     /* Improve long text readability */
     #readerArticle.prose {
         font-size: var(--reader-font-size);
@@ -219,12 +250,18 @@
     /* Enhanced mobile responsiveness */
     @media (max-width: 640px) {
         .reading-container {
-            padding: 1rem;
+            padding: 0.75rem;
+        }
+        
+        #readerArticle {
+            border-radius: 1rem;
+            margin-left: 0;
+            margin-right: 0;
         }
         
         #readerArticle.prose {
             font-size: 16px;
-            line-height: 1.7;
+            line-height: 1.75;
         }
         
         .reader-controls {
@@ -235,6 +272,13 @@
         .reader-controls button {
             padding: 0.5rem 0.75rem;
             font-size: 0.875rem;
+        }
+    }
+    
+    /* Tablet optimization */
+    @media (min-width: 641px) and (max-width: 1023px) {
+        #readerArticle {
+            border-radius: 1.25rem;
         }
     }
     
