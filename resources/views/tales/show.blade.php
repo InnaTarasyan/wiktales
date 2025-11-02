@@ -9,7 +9,7 @@
         <main class="w-full">
             <div class="mb-6">
                 @if($tale->cover_url)
-                    <img src="{{ $tale->cover_url }}" alt="{{ $tale->title }} cover" class="w-full max-h-96 object-cover rounded">
+                    <img src="{{ $tale->cover_url }}" alt="{{ $tale->title }} cover" class="w-full max-h-96 object-cover rounded cursor-pointer hover:opacity-90 transition-opacity" onclick="openImageModal(this.src, this.alt)">
                 @endif
                 <div class="mt-6 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
                     <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 leading-tight">{{ $tale->title }}</h1>
@@ -52,6 +52,19 @@
 
     <!-- Back to top button -->
     <button id="backToTop" class="px-3 py-2 rounded-lg bg-indigo-600 text-white shadow hover:bg-indigo-700">Вверх</button>
+</div>
+
+<!-- Image Modal -->
+<div id="imageModal" class="image-modal hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div class="modal-backdrop absolute inset-0 bg-black bg-opacity-75 transition-opacity cursor-pointer"></div>
+    <div class="modal-content relative z-10 max-w-7xl max-h-[90vh] w-full flex flex-col items-center">
+        <button id="closeModal" class="absolute -top-12 right-0 text-white hover:text-gray-300 transition-colors p-2 z-20" aria-label="Close">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+        </button>
+        <img id="modalImage" src="" alt="" class="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl">
+    </div>
 </div>
 @endsection
 
@@ -305,6 +318,50 @@
     * {
         transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
     }
+    
+    /* Image Modal Styles */
+    .image-modal {
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+    }
+    
+    .image-modal:not(.hidden) {
+        opacity: 1;
+    }
+    
+    .image-modal.hidden {
+        display: none;
+    }
+    
+    .modal-content {
+        animation: modalFadeIn 0.3s ease-in-out;
+    }
+    
+    @keyframes modalFadeIn {
+        from {
+            opacity: 0;
+            transform: scale(0.9);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+    
+    .image-modal img {
+        animation: imageZoomIn 0.3s ease-in-out;
+    }
+    
+    @keyframes imageZoomIn {
+        from {
+            opacity: 0;
+            transform: scale(0.95);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
 </style>
 
 <script>
@@ -393,5 +450,51 @@
     updateProgress();
     backToTop && backToTop.addEventListener('click', function() { window.scrollTo({ top: 0, behavior: 'smooth' }); });
 })();
+
+// Image Modal functionality
+function openImageModal(src, alt) {
+    const modal = document.getElementById('imageModal');
+    const modalImage = document.getElementById('modalImage');
+    modalImage.src = src;
+    modalImage.alt = alt || 'Image preview';
+    modal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeImageModal() {
+    const modal = document.getElementById('imageModal');
+    modal.classList.add('hidden');
+    document.body.style.overflow = 'auto';
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const modal = document.getElementById('imageModal');
+    const closeModal = document.getElementById('closeModal');
+    
+    if (closeModal) {
+        closeModal.addEventListener('click', closeImageModal);
+    }
+    
+    // Close modal when clicking on backdrop
+    const backdrop = modal.querySelector('.modal-backdrop');
+    if (backdrop) {
+        backdrop.addEventListener('click', closeImageModal);
+    }
+    
+    // Prevent closing when clicking on the image
+    const modalImage = document.getElementById('modalImage');
+    if (modalImage) {
+        modalImage.addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+    }
+    
+    // Close modal on Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+            closeImageModal();
+        }
+    });
+});
 </script>
 @endsection
