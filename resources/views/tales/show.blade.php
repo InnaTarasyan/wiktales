@@ -123,7 +123,7 @@
     /* Improve long text readability */
     #readerArticle.prose {
         font-size: var(--reader-font-size);
-        line-height: 1.85;
+        line-height: 1.5;
         text-wrap: pretty;
         -webkit-hyphens: auto;
         -ms-hyphens: auto;
@@ -144,10 +144,55 @@
     }
     
     #readerArticle.prose p { 
-        margin-top: 1.2em; 
-        margin-bottom: 1.2em; 
+        margin-top: 0.6em; 
+        margin-bottom: 0.6em; 
         text-align: justify;
         text-indent: 1.5em;
+    }
+    
+    /* Poetry formatting - no indent, tighter spacing */
+    #readerArticle.prose p.poetry-line,
+    #readerArticle.prose .poetry p {
+        text-indent: 0;
+        margin-top: 0.3em;
+        margin-bottom: 0.3em;
+        text-align: left;
+    }
+    
+    /* Collection titles in caps */
+    #readerArticle.prose .poetry-collection-title {
+        font-weight: 700;
+        text-transform: uppercase;
+        text-indent: 0;
+        margin-top: 1.5em;
+        margin-bottom: 0.8em;
+        text-align: left;
+        letter-spacing: 0.05em;
+    }
+    
+    /* Poem titles */
+    #readerArticle.prose .poem-title {
+        font-weight: 600;
+        text-indent: 0;
+        margin-top: 1em;
+        margin-bottom: 0.5em;
+        text-align: left;
+        font-style: italic;
+    }
+    
+    /* Bold poem titles for specific collection */
+    #readerArticle.prose .poem-title-bold {
+        font-weight: 700;
+        text-indent: 0;
+        margin-top: 1em;
+        margin-bottom: 0.5em;
+        text-align: left;
+        font-style: normal;
+    }
+    
+    /* Single character paragraphs (like dots for spacing in poetry) */
+    #readerArticle.prose p:only-child {
+        text-indent: 0;
     }
     
     #readerArticle.prose h1, 
@@ -274,7 +319,7 @@
         
         #readerArticle.prose {
             font-size: 16px;
-            line-height: 1.75;
+            line-height: 1.5;
         }
         
         .reader-controls {
@@ -449,6 +494,168 @@
     window.addEventListener('scroll', updateProgress, { passive: true });
     updateProgress();
     backToTop && backToTop.addEventListener('click', function() { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+    
+    // Poetry detection and formatting
+    function formatPoetry() {
+        const article = document.getElementById('readerArticle');
+        if (!article) return;
+        
+        // List of poem titles that should be bold
+        const boldPoemTitles = [
+            'Oh, Moon !..(Гимн)',
+            'Der törichte Mond',
+            'Холодная Луна',
+            'Копошенье в темноте',
+            'Игра света и тени',
+            'Полнолуние в пасмурную ночь',
+            'Фонарь у заставы Встреч',
+            'Нимфы горных озер',
+            'Адские ландшафты',
+            'Тени снов. Карнавал',
+            'Марсий',
+            'Осколки сна',
+            'Кривые зеркала',
+            'Танец Анитры',
+            'Воинство темных монахов'
+        ];
+        
+        const paragraphs = article.querySelectorAll('p');
+        let inPoetry = false;
+        let poetryStartIndex = -1;
+        
+        paragraphs.forEach((p, index) => {
+            const text = p.textContent.trim();
+            
+            // First, check if this is one of the specific bold poem titles
+            // This check should happen before other checks to ensure bold titles are prioritized
+            let matchedBoldTitle = null;
+            for (const title of boldPoemTitles) {
+                // Normalize both strings for comparison (trim, normalize spaces, remove zero-width characters)
+                const normalizedText = text.replace(/\s+/g, ' ').replace(/[\u200B-\u200D\uFEFF]/g, '').trim();
+                const normalizedTitle = title.replace(/\s+/g, ' ').replace(/[\u200B-\u200D\uFEFF]/g, '').trim();
+                
+                // Exact match (most common case - title in separate paragraph)
+                if (normalizedText === normalizedTitle) {
+                    matchedBoldTitle = title;
+                    break;
+                }
+                
+                // Check if text starts with the title (handles cases with extra text after title)
+                if (normalizedText.startsWith(normalizedTitle + ' ') || normalizedText.startsWith(normalizedTitle + '\n')) {
+                    matchedBoldTitle = title;
+                    break;
+                }
+                
+                // Check if title starts with text (handles abbreviated matches)
+                if (normalizedTitle.startsWith(normalizedText) && normalizedText.length > 5) {
+                    matchedBoldTitle = title;
+                    break;
+                }
+                
+                // Check if text contains the title as a separate line (for cases where title and text are in same paragraph)
+                if (normalizedText.includes(normalizedTitle)) {
+                    // Make sure it's not just a substring match - check if it's at the start or after newline/space
+                    const titleIndex = normalizedText.indexOf(normalizedTitle);
+                    const charBefore = titleIndex > 0 ? normalizedText[titleIndex - 1] : '';
+                    const charAfter = titleIndex + normalizedTitle.length < normalizedText.length 
+                        ? normalizedText[titleIndex + normalizedTitle.length] 
+                        : '';
+                    // Title should be at start, or after space/newline, and followed by space/newline or end of string
+                    if (titleIndex === 0 || charBefore === ' ' || charBefore === '\n') {
+                        if (charAfter === '' || charAfter === ' ' || charAfter === '\n') {
+                            matchedBoldTitle = title;
+                            break;
+                        }
+                    }
+                }
+            }
+            
+            const isBoldTitle = matchedBoldTitle !== null;
+            
+            if (isBoldTitle) {
+                p.classList.add('poem-title-bold');
+                // Remove any other title classes that might have been added
+                p.classList.remove('poem-title');
+                if (!inPoetry) {
+                    inPoetry = true;
+                    poetryStartIndex = index;
+                }
+                return;
+            }
+            
+            // Explicitly exclude "Глупая Луна!" from being treated as a title
+            // This is the first line of "Der törichte Mond", not a title
+            if (text === 'Глупая Луна!' || text.startsWith('Глупая Луна!')) {
+                // This is poetry content, not a title
+                if (inPoetry) {
+                    p.classList.add('poetry-line');
+                }
+                return;
+            }
+            
+            // Detect poetry collection titles (all caps, possibly with parentheses)
+            // This should come after bold title check
+            if (/^[А-ЯЁA-Z\s\(\)]+$/.test(text) && text.length > 5 && text.length < 100) {
+                p.classList.add('poetry-collection-title');
+                inPoetry = true;
+                poetryStartIndex = index;
+                return;
+            }
+            
+            // Detect poem titles (often italicized or have specific patterns)
+            // Titles are usually shorter and may contain special characters
+            if (inPoetry && text.length > 0 && text.length < 80 && 
+                (text.includes('(') || text.includes('!') || text.includes('..'))) {
+                p.classList.add('poem-title');
+                return;
+            }
+            
+            // Detect poetry lines - short lines, no typical prose punctuation at end
+            // Poetry often has lines that don't end with periods or have irregular punctuation
+            if (inPoetry && text.length > 0) {
+                // If it's a single dot, it's a spacing line
+                if (text === '.' || text === '·') {
+                    p.style.marginTop = '0.5em';
+                    p.style.marginBottom = '0.5em';
+                    p.style.height = '0.5em';
+                    return;
+                }
+                
+                // Check if this looks like a poetry line
+                // Poetry lines are often shorter, don't have text-indent, and may have irregular punctuation
+                const isShortLine = text.length < 150;
+                const hasPoetryPattern = /[!?…]$/.test(text) || !/[.!]$/.test(text);
+                
+                if (isShortLine || hasPoetryPattern) {
+                    p.classList.add('poetry-line');
+                }
+            }
+            
+            // Detect end of poetry section - long paragraph with typical prose punctuation
+            if (inPoetry && text.length > 200 && /[.!]$/.test(text)) {
+                // Check if next few paragraphs are also prose
+                let proseCount = 0;
+                for (let i = index + 1; i < Math.min(index + 3, paragraphs.length); i++) {
+                    const nextText = paragraphs[i].textContent.trim();
+                    if (nextText.length > 100 && /[.!]$/.test(nextText)) {
+                        proseCount++;
+                    }
+                }
+                
+                if (proseCount >= 1) {
+                    inPoetry = false;
+                    poetryStartIndex = -1;
+                }
+            }
+        });
+    }
+    
+    // Run poetry formatting after DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', formatPoetry);
+    } else {
+        formatPoetry();
+    }
 })();
 
 // Image Modal functionality

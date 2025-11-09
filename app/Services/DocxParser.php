@@ -271,8 +271,22 @@ class DocxParser
             if ($current !== null) { $sections[] = $current; }
         }
 
-        // Fallback: if no sections detected, create one section with all content minus title
-        if (count($sections) === 0) {
+        // Check if sections have empty content - if so, use fallback
+        $hasContent = false;
+        foreach ($sections as $section) {
+            if (!empty(trim($section['body_html'] ?? ''))) {
+                $hasContent = true;
+                break;
+            }
+        }
+        
+        // Fallback: if no sections detected OR all sections are empty, create one section with all content minus title
+        if (count($sections) === 0 || !$hasContent) {
+            // If we have empty sections, clear them first
+            if (count($sections) > 0 && !$hasContent) {
+                $sections = [];
+            }
+            
             $contentLines = array_map(fn($l) => $l['text'], $lines);
             if ($title) {
                 // remove first occurrence of title line
@@ -282,10 +296,39 @@ class DocxParser
                     return true;
                 }));
             }
-            $bodyText = trim(implode("\n", array_filter($contentLines)));
+            
+            // Also remove TOC lines and empty lines
+            $filteredLines = [];
+            $skipToc = false;
+            foreach ($contentLines as $line) {
+                $t = trim($line);
+                if ($t === '') continue;
+                
+                // Skip TOC section
+                if (in_array($t, ['СОДЕРЖАНИЕ', 'INHALTSREGISTER', 'TABLE OF CONTENTS'])) {
+                    $skipToc = true;
+                    continue;
+                }
+                
+                if ($skipToc && preg_match('/^\d+\.\s*(.+)$/u', $t)) {
+                    continue; // Skip TOC entries
+                }
+                
+                if ($skipToc && !preg_match('/^\d+\.\s*(.+)$/u', $t) && $t !== '') {
+                    $skipToc = false; // We're past the TOC
+                }
+                
+                if ($skipToc) continue;
+                
+                $filteredLines[] = $t;
+            }
+            
+            $bodyText = trim(implode("\n", $filteredLines));
             $bodyHtml = '';
-            foreach (array_filter($contentLines) as $t) {
-                $bodyHtml .= '<p>' . e($t) . '</p>';
+            foreach ($filteredLines as $t) {
+                if (trim($t) !== '') {
+                    $bodyHtml .= '<p>' . e($t) . '</p>';
+                }
             }
             $sections[] = [
                 'title' => $title ?? pathinfo($docxPath, PATHINFO_FILENAME),
