@@ -1,10 +1,17 @@
 @extends('layouts.app')
 
-@section('title', 'Форум')
+@section('title', 'Форум: Обсуждение мифологического сознания')
+@section('description', 'Обсуждение литературных произведений, исследующих мифологические архетипы и экзистенциальные границы человеческого опыта')
 
 @section('content')
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-    <h1 class="text-3xl font-bold text-gray-900 mb-6">Форум</h1>
+    <div class="mb-8">
+        <h1 class="text-3xl font-bold text-gray-900 mb-3">Форум</h1>
+        <p class="text-lg text-gray-600 max-w-3xl">
+            Пространство для обсуждения произведений, исследующих мифологическое сознание, архетипические паттерны 
+            и границы между сном и явью, памятью и забвением, мифом и историей
+        </p>
+    </div>
 
     @if(session('success'))
         <div class="mb-6 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg">
@@ -31,7 +38,10 @@
                             </div>
                         </a>
                     @empty
-                        <div class="px-6 py-8 text-center text-gray-500">Тем пока нет. Будьте первым!</div>
+                        <div class="px-6 py-8 text-center text-gray-500">
+                            <p class="mb-2">Тем пока нет. Будьте первым!</p>
+                            <p class="text-sm">Начните обсуждение мифологических архетипов, экзистенциальных границ или литературных произведений</p>
+                        </div>
                     @endforelse
                 </div>
                 <div class="px-6 py-4">{{ $topics->links() }}</div>

@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'Мифы и метаморфозы: Литературное собрание')
+@section('description', 'Глубокое погружение в мифологическое сознание, где древние архетипы встречаются с современной экзистенциальной реальностью')
 
 @section('content')
 <div class="main-page-wrapper">
